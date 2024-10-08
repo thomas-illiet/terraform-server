@@ -6,6 +6,8 @@ TerrAPI is a RESTful API service designed to simplify and automate your Terrafor
 
 This project allows developers and DevOps teams to integrate Terraform workflows into their existing applications and services effortlessly. TerrAPI handles the heavy lifting, so you can focus on what matters — building scalable, resilient infrastructure. Whether you're deploying infrastructure on AWS, GCP, or other cloud providers, TerrAPI offers a seamless experience for infrastructure-as-code automation.
 
+Let TerrAPI be the "therapy" your infrastructure needs!
+
 ## Development
 
 Make sure you have a working Go environment, for further reference or a guide
