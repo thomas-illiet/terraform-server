@@ -23,10 +23,6 @@ vet:
 staticcheck: $(STATICCHECK)
 	$(STATICCHECK) -tags '$(TAGS)' $(PACKAGES)
 
-.PHONY: lint
-lint: $(REVIVE)
-	for PKG in $(PACKAGES); do $(REVIVE) -config revive.toml -set_exit_status $$PKG || exit 1; done;
-
 .PHONY: build
 build: $(BIN)/$(NAME)
 

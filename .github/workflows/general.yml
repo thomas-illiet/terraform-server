@@ -38,7 +38,7 @@ jobs:
 
       - name: Run lint
         id: lint
-        run: make lint
+        uses: morphy2k/revive-action@v2
 
       - name: Run build
         id: build
