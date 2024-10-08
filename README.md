@@ -1,4 +1,4 @@
-# Terrapi
+# TerrAPI
 
 [![Current Tag](https://img.shields.io/github/v/tag/thomas-illiet/terrapi?sort=semver)](https://github.com/thomas-illiet/terrapi) [![Build Status](https://github.com/thomas-illiet/terrapi/actions/workflows/general.yml/badge.svg)](https://github.com/thomas-illiet/terrapi/actions) [![Go Reference](https://pkg.go.dev/badge/github.com/thomas-illiet/terrapi.svg)](https://pkg.go.dev/github.com/thomas-illiet/terrapi) [![Go Report Card](https://goreportcard.com/badge/github.com/thomas-illiet/terrapi)](https://goreportcard.com/report/github.com/thomas-illiet/terrapi) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d2bc4877341f4c7fbf9b4fa62b8d0484)](https://www.codacy.com/gh/thomas-illiet/terrapi/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=thomas-illiet/terrapi&amp;utm_campaign=Badge_Grade)
 
