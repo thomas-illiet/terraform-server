@@ -5,16 +5,16 @@ import (
 )
 
 type Module struct {
-	Id          uint `gorm:"primaryKey"`
+	ID          uint `gorm:"primaryKey"`
 	Name        string
-	Source      ModuleSource  `gorm:"foreignKey:ModuleId;references:Id"`
-	Deployments *[]Deployment `gorm:"foreignKey:ModuleId;references:Id"`
+	Source      ModuleSource  `gorm:"foreignKey:ModuleID;references:ID"`
+	Deployments *[]Deployment `gorm:"foreignKey:ModuleID;references:ID"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type ModuleSource struct {
-	ModuleId   uint
+	ModuleID   uint
 	Repository string
 	Branch     string
 	Path       string

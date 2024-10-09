@@ -3,17 +3,17 @@ package model
 import "time"
 
 type Deployment struct {
-	Id        uint `gorm:"primaryKey"`
+	ID        uint `gorm:"primaryKey"`
 	ModuleId  uint
 	Name      string
-	Variables *[]DeploymentVariable `gorm:"foreignKey:DeploymentId;references:Id"`
-	States    *[]State              `gorm:"foreignKey:DeploymentId;references:Id"`
+	Variables *[]DeploymentVariable `gorm:"foreignKey:DeploymentID;references:ID"`
+	States    *[]State              `gorm:"foreignKey:DeploymentID;references:ID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type DeploymentVariable struct {
-	DeploymentId int
+	DeploymentID int
 	Name         string
 	Value        string
 }

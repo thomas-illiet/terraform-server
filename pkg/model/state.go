@@ -7,8 +7,8 @@ import (
 )
 
 type State struct {
-	Id           uint `gorm:"primaryKey"`
-	DeploymentId uint
+	ID           uint `gorm:"primaryKey"`
+	DeploymentID uint
 	Name         string
 	Version      uint
 	Data         []byte
