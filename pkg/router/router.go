@@ -5,14 +5,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/thomas-illiet/terrapi/controllers"
 	"github.com/thomas-illiet/terrapi/pkg/config"
+	"github.com/thomas-illiet/terrapi/pkg/handler"
 	"github.com/thomas-illiet/terrapi/pkg/middleware/header"
 	"github.com/thomas-illiet/terrapi/pkg/middleware/prometheus"
+	"gorm.io/gorm"
 )
 
 // Load initializes the routing of the application.
-func Load(cfg *config.Config) *gin.Engine {
+func Load(db *gorm.DB, cfg *config.Config) *gin.Engine {
 	// Creates a router without any middleware by default
 	r := gin.Default()
 
@@ -28,14 +29,29 @@ func Load(cfg *config.Config) *gin.Engine {
 	r.Use(header.Secure())
 	r.Use(header.Options())
 
+	//
+	r.Use(ApiMiddleware(db, cfg))
+
 	v1 := r.Group("/v1")
 
-	remote := v1.Group("/remote")
-	remote.GET("/*wildcard", controllers.GetDeployments)
-	remote.POST("/*wildcard", controllers.GetDeployments)
-	remote.DELETE("/*wildcard", controllers.GetDeployments)
-	remote.Handle("LOCK", "/*wildcard", controllers.GetDeployments)
-	remote.Handle("UNLOCK", "/*wildcard", controllers.GetDeployments)
+	remote := v1.Group("/states")
+	remote.GET("/*wildcard", handler.StateFetch)
+	remote.POST("/*wildcard", handler.StateUpdate)
+	remote.DELETE("/*wildcard", handler.StateDelete)
+	remote.Handle("LOCK", "/*wildcard", handler.StateLock)
+	remote.Handle("UNLOCK", "/*wildcard", handler.StateUnlock)
+
+	module := v1.Group("/modules")
+	module.GET("", handler.ModuleFetchs)
+	module.POST("", handler.ModuleCreate)
+	module.GET("/:id", handler.ModuleFetch)
+	module.DELETE("/:id", handler.ModuleDelete)
+
+	deployment := v1.Group("/deployments")
+	deployment.GET("", handler.DeploymentFetchs)
+	deployment.POST("", handler.DeploymentCreate)
+	deployment.GET("/:id", handler.DeploymentFetch)
+	deployment.DELETE("/:id", handler.DeploymentDelete)
 
 	return r
 }
@@ -98,4 +114,13 @@ func Ciphers(cfg *config.Config) []uint16 {
 	}
 
 	return nil
+}
+
+// ApiMiddleware will add the db connection to the context
+func ApiMiddleware(db *gorm.DB, cfg *config.Config) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("databaseConn", db)
+		c.Set("config", cfg)
+		c.Next()
+	}
 }

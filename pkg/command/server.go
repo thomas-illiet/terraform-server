@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/thomas-illiet/terrapi/pkg/database"
 	"github.com/thomas-illiet/terrapi/pkg/router"
+	"gorm.io/gorm"
 )
 
 // Command-line flags default values
@@ -82,9 +83,9 @@ func serverAction(_ *cobra.Command, _ []string) {
 	// Setup HTTP server
 	var server http.Server
 	if cfg.Server.Cert != "" && cfg.Server.Key != "" {
-		server = createTLSServer() // Setup HTTPS server
+		server = createTLSServer(db) // Setup HTTPS server
 	} else {
-		server = createHTTPServer() // Setup HTTP server
+		server = createHTTPServer(db) // Setup HTTP server
 	}
 
 	// Add server to the run group for graceful shutdown handling
@@ -145,7 +146,7 @@ func serverAction(_ *cobra.Command, _ []string) {
 }
 
 // Sets up an HTTPS server with TLS configurations
-func createTLSServer() http.Server {
+func createTLSServer(db *gorm.DB) http.Server {
 	// Load the TLS certificate and private key
 	cert, err := tls.LoadX509KeyPair(cfg.Server.Cert, cfg.Server.Key)
 	if err != nil {
@@ -155,7 +156,7 @@ func createTLSServer() http.Server {
 	// Return HTTPS server configuration
 	return http.Server{
 		Addr:         cfg.Server.Addr,
-		Handler:      router.Load(cfg),
+		Handler:      router.Load(db, cfg),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		TLSConfig: &tls.Config{
@@ -169,11 +170,11 @@ func createTLSServer() http.Server {
 }
 
 // Sets up a standard HTTP server
-func createHTTPServer() http.Server {
+func createHTTPServer(db *gorm.DB) http.Server {
 	// Return HTTP server configuration
 	return http.Server{
 		Addr:         cfg.Server.Addr,
-		Handler:      router.Load(cfg),
+		Handler:      router.Load(db, cfg),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
